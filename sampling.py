@@ -9,15 +9,16 @@ img_format = 'png'
 # Sampling Methods
 
 def sampling_exponential_distribution(L, lambd):
-    super_sam = 0.0
-    for _ in range(1000):
+    deviation = 0.0
+    repetitions = 1000
+    for _ in range(repetitions):
         z = uniform.rvs(size=L)
         y = map(lambda(x) : -(1/lambd)*log(1-x), z)
         sample_mean = sum(y) / L
         true_mean = 1 / lambd
-        super_sam = super_sam + sample_mean/1000.0
+        deviation = deviation + abs(true_mean - sample_mean)
         
-    return abs(true_mean - super_sam)
+    return deviation/repetitions
 
 def convergence_plot(lambd):
     L = [10**i for i in range(5)]
