@@ -22,10 +22,26 @@ def sampling_exponential_distribution(L, lambd):
 
 def convergence_plot(lambd):
     L = [10**i for i in range(5)]
-    plt.plot(L, map(lambda(x) : sampling_exponential_distribution(x, lambd), L))
+    label = '$|\mu_y - \hat{y}|$'
+    plt.plot(L, map(lambda(x) : sampling_exponential_distribution(x, lambd), L),
+             label=label)
+    plt.legend()
     axes = plt.axes()
     axes.set_xscale('log')
     plt.savefig("montecarlo.%s" % img_format, format=img_format)
+    plt.close()
+
+def convergence_log_plot(lambd):
+    L = [10**i for i in range(5)]
+    label = '$\log(|\mu_y - \hat{y}|)$'
+    plt.plot(L, map(lambda(x) : log(sampling_exponential_distribution(x, lambd)), L),
+             label=label)
+    plt.legend()
+    axes = plt.axes()
+    axes.set_xscale('log')
+    plt.savefig("montecarlo_logplot.%s" % img_format, format=img_format)
+    plt.close()
 
 if __name__ == "__main__":
     convergence_plot(0.5)
+    convergence_log_plot(0.5)
