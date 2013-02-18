@@ -43,7 +43,7 @@ if __name__ == "__main__":
     
         if(raw_input("Compute question 1.7: 2-dimensional histogram? (Y/n): ") == "Y"):
             plt.figure()
-            #est.histogram_plot_2d(data) Virkar ekki a thessari vel
+            est.histogram_plot_2d(data)
             plt.close()
             print "Saved results as histogram3d_10bins.png, histogram3d_15bins.png, histogram3d_20bins.png"
     print
