@@ -25,6 +25,7 @@ def convergence_plot(lambd):
     plt.plot(L, map(lambda(x) : sampling_exponential_distribution(x, lambd), L))
     axes = plt.axes()
     axes.set_xscale('log')
-    plt.show()
+    plt.savefig("montecarlo.%s" % img_format, format=img_format)
 
-convergence_plot(0.5)
+if __name__ == "__main__":
+    convergence_plot(0.5)
