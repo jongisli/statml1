@@ -67,7 +67,7 @@ if __name__ == "__main__":
         if not (os.path.isfile("data/prob_Z") and os.path.isfile("data/prob_Z_trans")):
             obj.probability_model("kande1.pnm") #This function is very slow
 	                                    #delete data folder to rerun it
-        obj.display_model(obj.get_Z("data/prob_Z_trans"),(640,480))
+        obj.display_model(obj.get_Z("data/prob_Z_trans"),(480,640))
         plt.close()
 
     if(raw_input("Compute question 1.10: Plot object postition and spread? (Y/n): ") == "Y"):
