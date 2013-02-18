@@ -100,4 +100,5 @@ def histogram_plot_2d(data):
     plt.savefig('histogram3d_20bins.%s' % img_format, format=img_format)
 
 
-histogram_plot_2d(data(100000))
+if __name__ == "__main__":
+    histogram_plot_2d(data(100000))
