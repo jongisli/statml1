@@ -2,6 +2,10 @@
 import Image
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+
+img_format = 'png'
 
 def norm_pdf_multivariate(mu, sigma):
    sigma = np.matrix(sigma)
@@ -47,9 +51,44 @@ def get_Z(file):
 
 def get_object_position(width):
    Z = get_Z('data/prob_Z')
-   q_hat = sum([i*z for i,z in enumerate(Z)]) / sum(Z)
-   x = q_hat % width
-   y = q_hat / width
-   return (x,y)
+   q_hat = sum([np.array([i % width, i / width]) * z \
+                for i,z in enumerate(Z)]) / sum(Z)
+   return q_hat
+
+def spatial_covariance(width):
+   Z = get_Z('data/prob_Z')
+   x,y = get_object_position(width)
+   C = sum([(np.array([[i % width, i / width]]) - np.array([[x,y]])) * \
+            (np.array([[i%width, i/width]]) - np.array([[x,y]])).T * z \
+            for i,z in enumerate(Z)]) / float(sum(Z))
+   return C
+
+def contour_plot(height,width):
+   im = plt.imread("kande1.JPG")
+   plt.imshow(im)
+   
+   mean_x, mean_y = get_object_position(width)
+   covariance = spatial_covariance(width)
+   delta = 1
+   x = np.arange(0, width, delta)
+   y = np.arange(0, height, delta)
+   X, Y = np.meshgrid(x, y)
+   Z = mlab.bivariate_normal(
+      X,
+      Y,
+      sigmax=covariance[0][0],
+      sigmay=covariance[1][1],
+      mux=mean_x,
+      muy=mean_y,
+      sigmaxy=covariance[0][1])
+   plt.scatter(mean_x,mean_y,s=50, c='green', marker='x')
+   plt.contour(X, Y, Z)
+   plt.savefig('kande1_and_contours.%s' % img_format, format=img_format)
+
+if  __name__ == "__main__":
+   contour_plot(640,480)
+
+
+   
 
 
