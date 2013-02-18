@@ -21,6 +21,7 @@ def gaussian_plots():
     plt.savefig('gaussian.%s' % img_format, format=img_format)
     plt.close()
 
+#question 1.2
 def data(N):
     mean = [1,1]
     cov = [[0.3,0.2],[0.2,0.2]]
@@ -82,7 +83,6 @@ def histogram_and_analytical_plot(data, bins):
     plt.legend()
     plt.savefig('hist_and_analytical.%s' % img_format, format=img_format)
     plt.close()
-
 
 # question 1.7
 def histogram_plot_2d(data):

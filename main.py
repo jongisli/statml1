@@ -8,7 +8,8 @@ if __name__ == "__main__":
         plt.figure()
         est.gaussian_plots()
         plt.close()
-    print "... Saved result as image gaussian.png"
+        print "... Saved result as image gaussian.png"
+
     print 
 
     if (raw_input("Compute question 1.2: Random data set? (no will skip 2-7) (Y/n): ") == "Y"):
@@ -47,7 +48,7 @@ if __name__ == "__main__":
             plt.close()
             print "Saved results as histogram3d_10bins.png, histogram3d_15bins.png, histogram3d_20bins.png"
     print
-    
+
     if(raw_input("Compute question 1.8: Monte Carlo? (Y/n): ") == "Y"):
         plt.figure()
         sam.convergence_plot(0.5)
@@ -57,17 +58,21 @@ if __name__ == "__main__":
 
     import objdetection as obj
     import os.path
-    print "Compute question 1.9: Visualise kandle1 from training set",
-    plt.figure()
-    try:
-        os.makedirs("data")
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise
-    if not (os.path.isfile("data/prob_Z") and os.path.isfile("data/prob_Z_trans")):
-        obj.probability_model("kande1.pnm") #This function is very slow
-	                                    #delete data folder to rerun it
-    obj.display_model(get_Z("data/prob_Z_trans"),(640,480))
-    plt.close()
+    if(raw_input("Compute question 1.9: Visualise kandle1 from training set") == "Y"):
+        plt.figure()
 
-    
+        if not os.path.exists("data"):
+            os.makedirs("data")
+
+        if not (os.path.isfile("data/prob_Z") and os.path.isfile("data/prob_Z_trans")):
+            obj.probability_model("kande1.pnm") #This function is very slow
+	                                    #delete data folder to rerun it
+        obj.display_model(obj.get_Z("data/prob_Z_trans"),(640,480))
+        plt.close()
+
+    if(raw_input("Compute question 1.10: Plot object postition and spread? (Y/n): ") == "Y"):
+        plt.figure()
+
+	obj.contour_plot()
+
+	plt.clean()
