@@ -73,6 +73,6 @@ if __name__ == "__main__":
     if(raw_input("Compute question 1.10: Plot object postition and spread? (Y/n): ") == "Y"):
         plt.figure()
 
-	obj.contour_plot()
+	obj.contour_plot(640,480)
 
 	plt.clean()
