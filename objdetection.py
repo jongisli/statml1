@@ -99,7 +99,7 @@ def contour_plot(height,width):
       sigmaxy=covariance[0][1])
    axes.scatter(mean_x,mean_y,s=50, c='green', marker='x',linewidth=2,
                label='$\hat{q}$')
-   C = axes.contour(X, Y, Z, label='probability contours')
+   axes.contour(X, Y, Z)
    plt.legend(loc=0, scatterpoints = 1)
    plt.savefig('kande1_and_contours.%s' % img_format, format=img_format)
    plt.close()
