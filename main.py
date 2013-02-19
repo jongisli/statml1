@@ -4,11 +4,13 @@ import sampling as sam
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
+    image_format = "png" 
+
     if (raw_input("Compute question 1.1: Plot different gaussians? (Y/n): ") == "Y"):
         plt.figure()
         est.gaussian_plots()
         plt.close()
-        print "... Saved result as image gaussian.png"
+        print "... Saved result as image gaussian.%s" % img_format
 
     print 
 
@@ -24,14 +26,14 @@ if __name__ == "__main__":
             print sample_mean
             print "Sample cov:"
             print sample_cov
-            print "Saved result as image scatter.png"
+            print "Saved result as image scatter.%s" % img_format
             plt.close()
         print
     
         if(raw_input("Compute question 1.5: histogram based probability estimate? (Y/n): ") == "Y"):
             plt.figure()
             est.histogram_plot(data, 10)
-            print "Saved results as histogram1.png and histogram2.png"
+            print "Saved results as histogram1.png and histogram2.%s" % img_format
             plt.close()
         print
     
@@ -39,20 +41,22 @@ if __name__ == "__main__":
             plt.figure()
             est.histogram_and_analytical_plot(data,10)
             plt.close()
-            print "Saved results as hist_and_analytical.png"
+            print "Saved results as hist_and_analytical.%s" % img_format
         print
     
         if(raw_input("Compute question 1.7: 2-dimensional histogram? (Y/n): ") == "Y"):
             plt.figure()
             est.histogram_plot_2d(data)
             plt.close()
-            print "Saved results as histogram3d_10bins.png, histogram3d_15bins.png, histogram3d_20bins.png"
+            print "Saved results as histogram3d_10bins.png, histogram3d_15bins.png, histogram3d_20bins.%s" % img_format
     print
 
     if(raw_input("Compute question 1.8: Monte Carlo? (Y/n): ") == "Y"):
         plt.figure()
         sam.convergence_plot(0.5)
-        print "Saved results as montecarlo.png"
+	sam.convergence_log_plot(0.5)
+        print "Saved results as montecarlo.%s" % img_format
+        print "Saved results as montecarlo_logplot.%s" % img_format
         plt.close()
         print
 
