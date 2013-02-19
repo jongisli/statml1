@@ -7,9 +7,8 @@ import matplotlib.mlab as mlab
 
 img_format = 'png'
 
-#precond: sigma is a non-singular 2x2 matrix
-#returns: a function that takes a x-mu value and computes the probability density
-
+#precond: sigma is a non-singular 3x3 matrix, mu is a 3-d vector
+#returns: a function that takes the difference x-mu value and computes the probability density
 def norm_pdf_multivariate(mu, sigma):
    sigma = np.matrix(sigma)
    
@@ -18,7 +17,8 @@ def norm_pdf_multivariate(mu, sigma):
    if det == 0:
       raise NameError("The covariance matrix can't be singular")
    norm_const = 1.0/ ( math.pow((2*np.pi),float(3)/2) * math.pow(det,1.0/2) )
-   return (lambda(x_mu): \
+   return (lambda(x): 
+       with (np.matrix(x-mu)) as x_mu:
            norm_const * math.pow(math.e, -0.5 * (x_mu * inv * x_mu.T)))
 
 def probability_model(image):
@@ -32,7 +32,7 @@ def probability_model(image):
 def density_estimate(image,mean,covariance):
    im = Image.open(image)
    gauss = norm_pdf_multivariate(mean, covariance)
-   Z = [gauss(np.matrix(x - mean)) for x in im.getdata()]
+   Z = [gauss(x) for x in im.getdata()]
    file_Z = open('data/Z_'+image+'.data', 'w')
    for z in Z:
       file_Z.write("%s\n" % z)
