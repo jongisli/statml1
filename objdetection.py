@@ -40,6 +40,7 @@ def probability_model(image):
    for z in transformed_Z:
       file_Z.write("%s\n" % z)
    file_Z.close()
+   return (mean, covariance)
 
 def display_model(transformed_z, size):
    im = Image.new('L', size)
@@ -54,6 +55,17 @@ def get_object_position(width):
    q_hat = sum([np.array([i % width, i / width]) * z \
                 for i,z in enumerate(Z)]) / sum(Z)
    return q_hat
+
+def plot_weighted_position(width):
+   mean_x,mean_y = get_object_position(width)
+   im = plt.imread("kande1.JPG")
+   plt.imshow(im)
+   plt.scatter(mean_x,mean_y, s=50, c='green', marker='x', linewidth=2,
+               label='$\hat{q}$')
+   plt.legend(loc=0, scatterpoints = 1)
+   plt.savefig('kande1_weighted_pos.%s' % img_format, format=img_format)
+   plt.close()
+   
 
 def spatial_covariance(width):
    Z = get_Z('data/prob_Z')
@@ -86,7 +98,7 @@ def contour_plot(height,width):
    plt.savefig('kande1_and_contours.%s' % img_format, format=img_format)
 
 if  __name__ == "__main__":
-   contour_plot(640,480)
+   plot_weighted_position(480)
 
 
    
