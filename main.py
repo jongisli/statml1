@@ -4,7 +4,7 @@ import sampling as sam
 import matplotlib.pyplot as plt
 
 def main():    
-    image_format = "png" 
+    img_format = "png" 
 
     if (raw_input("Compute question 1.1: Plot different gaussians? (y/n): ") == "y"):
         plt.figure()
@@ -43,14 +43,14 @@ def main():
             print "Saved results as hist_and_analytical.%s" % img_format
         print
     
-        if(raw_input("Compute question 1.7: 2-dimensional histogram? (Y/n): ") == "y"):
+        if(raw_input("Compute question 1.7: 2-dimensional histogram? (y/n): ") == "y"):
             plt.figure()
             est.histogram_plot_2d(data)
             plt.close()
             print "Saved results as histogram3d_10bins.png, histogram3d_15bins.png, histogram3d_20bins.%s" % img_format
     print
 
-    if(raw_input("Compute question 1.8: Monte Carlo? (Y/n): ") == "y"):
+    if(raw_input("Compute question 1.8: Monte Carlo? (y/n): ") == "y"):
         plt.figure()
         sam.convergence_plot(0.5)
 	sam.convergence_log_plot(0.5)
