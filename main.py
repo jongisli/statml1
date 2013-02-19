@@ -3,7 +3,7 @@ import estimation as est
 import sampling as sam
 import matplotlib.pyplot as plt
 
-if __name__ == "__main__":
+def main():    
     image_format = "png" 
 
     if (raw_input("Compute question 1.1: Plot different gaussians? (y/n): ") == "y"):
@@ -58,9 +58,16 @@ if __name__ == "__main__":
         print "Saved results as montecarlo_logplot.%s" % img_format
         plt.close()
         print
-
+    
     import objdetection as obj
     import os.path
+
+    if(raw_input("Compute probability model for kande1.pnm? (no will skip 9-11) (y/n): ") == "y"):
+        mu,sigma = obj.probability_model("kande1.pnm")
+	print
+    else:
+        return
+
     if(raw_input("Compute question 1.9: Visualise kande1 probability density? (y/n): ") == "y"):
         plt.figure()
 
@@ -68,8 +75,8 @@ if __name__ == "__main__":
             os.makedirs("data")
 
         if not (os.path.isfile("data/Z_kande1.pnm.data") and os.path.isfile("data/Z_trans_kande1.pnm.data")):
-            obj.probability_model("kande1.pnm") #This function is very slow
-	                                    #delete data folder to rerun it
+            obj.density_estimate("kande1.pnm",mu,sigma) #This function is very slow
+	                                       #delete data folder files rerun it
         obj.display_model("kande1.pnm")
         print "Saved results as kande1_density.png"
         plt.close()
@@ -90,9 +97,8 @@ if __name__ == "__main__":
             os.makedirs("data")
             
         if not (os.path.isfile("data/Z_kande2.pnm.data") and os.path.isfile("data/Z_trans_kande2.pnm.data")):
-            obj.probability_model("kande2.pnm") #This function is very slow
-	                                    #delete data folder to rerun it
-
+            obj.density_estimate("kande2.pnm",mu,sigma) #This function is very slow
+	                                       #delete data folder files rerun it
         obj.display_model("kande2.pnm")
         print "Saved results as kande2_density.png"
         plt.close()
@@ -105,3 +111,5 @@ if __name__ == "__main__":
         plt.close()
         print
 
+if __name__ == "__main__":
+    main()
