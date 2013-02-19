@@ -57,11 +57,11 @@ def main():
         print "Saved results as montecarlo.%s" % img_format
         print "Saved results as montecarlo_logplot.%s" % img_format
         plt.close()
-        print
+    print
     
     import objdetection as obj
     import os.path
-
+    
     if(raw_input("Compute probability model for kande1.pnm? (no will skip 9-11) (y/n): ") == "y"):
         mu,sigma = obj.probability_model("kande1.pnm")
 	print
