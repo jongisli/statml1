@@ -52,7 +52,9 @@ def display_model(image):
    im = Image.new('L', Image.open(image).size)
    datafile = 'data/Z_trans_'+image+'.data'
    im.putdata(get_Z(datafile))
-   im.save(image[:-4]+'_density.%s' % img_format, format=img_format)
+   plt.imshow(im)
+   plt.savefig(image[:-4]+'_density.%s' % img_format, format=img_format)
+   plt.close()
 
 def get_Z(datafile):
    return [float(line.strip()) for line in open(datafile)]
@@ -117,7 +119,8 @@ def contour_plot(image):
    plt.close()
 
 if  __name__ == "__main__":
-   contour_plot('kande2.pnm')
+   display_model('kande1.pnm')
+   display_model('kande2.pnm')
 
    
 
