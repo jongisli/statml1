@@ -7,6 +7,8 @@ import matplotlib.mlab as mlab
 
 img_format = 'png'
 
+#precond: sigma is a non-singular 2x2 matrix
+#returns: a function that takes a x-mu value and computes the probability density
 def norm_pdf_multivariate(mu, sigma):
    sigma = np.matrix(sigma)
    
@@ -18,14 +20,33 @@ def norm_pdf_multivariate(mu, sigma):
    return (lambda(x_mu): \
            norm_const * math.pow(math.e, -0.5 * (x_mu * inv * x_mu.T)))
 
+def multivariate_pdf(X,Y,mu, sigma):
+   Z = mlab.bivariate_normal(
+      X,
+      Y,
+      sigmax=sigma[0][0],
+      sigmay=sigma[1][1],
+      mux=mu[0],
+      muy=mu[1],
+      sigmaxy=sigma[0][1])
+   return Z
+
 def probability_model(image):
    orig = Image.open(image)
    crop = orig.crop((149,263,329,327))
    data = np.transpose(list(crop.getdata()))
    mean = np.mean(data, axis=1)
    covariance = np.cov(data)
-   gauss = norm_pdf_multivariate(mean, covariance)
-   Z = [gauss(np.matrix(x - mean)) for x in orig.getdata()]
+   return (mean, covariance)
+
+def density_estimate(image,mean,covariance):
+   orig = Image.open(image)
+   #gauss = norm_pdf_multivariate(mean, covariance)
+   print (orig.getdata())
+   return orig
+   X,Y = np.meshgrid(x, y)
+   Z = multivariate_pdf(X,Y,mean,covariance) 
+   #Z = [gauss(np.matrix(x - mean)) for x in orig.getdata()]
    file_Z = open('data/Z_'+image+'.data', 'w')
    for z in Z:
       file_Z.write("%s\n" % z)
@@ -40,7 +61,7 @@ def probability_model(image):
    for z in transformed_Z:
       file_Z.write("%s\n" % z)
    file_Z.close()
-   return (mean, covariance)
+   return transformed_Z
 
 def display_model(image):
    im = Image.new('L', Image.open(image).size)
@@ -111,7 +132,9 @@ def contour_plot(image):
    plt.close()
 
 if  __name__ == "__main__":
-  contour_plot('kande2.pnm')
+  mean,covariance = probability_model('kande1.pnm')
+  density_estimate('kande1.pnm',mean,covariance)
+  #contour_plot('kande2.pnm')
 
    
 
