@@ -9,9 +9,13 @@ img_format = 'png'
 # Question 1: Probability and Parameter Estimation
 
 #question 1.1
+#postcondition: gaussian.[img_format] now has the 3 gaussian plots
+#               N(-1,1),N(0,2),N(2,3)
 def gaussian_plots():
-    param = [(-1,1), (0,2), (2,3)]
+    param = [(-1,1), (0,2), (2,3)] #standard deviation values
     for i, params in enumerate(param):
+        # k gaussians have been plotted, k <= len(param)
+	# N(m,s) for m,s in param[k] is next to be plotted
         mean, std_dev = params
         range = np.arange(-4*std_dev + mean, 4*std_dev + mean, 0.001)
         plt_label = '$(\mu, \sigma) = (%d,%d)$' % (mean, std_dev)
@@ -22,6 +26,8 @@ def gaussian_plots():
     plt.close()
 
 #question 1.2
+#returns: N random values from the normal distribution with
+#         mu=(1,1), sigma = ((0.3,0.2),(0.2,0.2))
 def data(N):
     mean = [1,1]
     cov = [[0.3,0.2],[0.2,0.2]]
@@ -35,6 +41,9 @@ def covariance(data):
     return np.cov(np.transpose(data))
 
 # question 1.3
+#pre : sample is a set of points generated from the data(N) function
+#post: scatter.[img_format] has a scatterplot of the sample points,
+#      along with points which mark the sample and true mean.
 def estimate_params(sample):
     x,y = zip(*sample)
     sample_mean = mean(sample)
@@ -42,28 +51,31 @@ def estimate_params(sample):
     sample_cov = covariance(sample)
     plt.scatter(x,y)
     plt.scatter(1,1,s=50, c='red',
-                marker='x', label='$\mu$')
+                marker='x', label='$\mu$') #true mean plotted red
     plt.scatter(mean_x,mean_y,s=50, c='green',
-                marker='x', label='$\mu_{ML}$')
+                marker='x', label='$\mu_{ML}$') #sample mean plotted green
     plt.legend()
-    plt.savefig('scatter.%s' % img_format, format=img_format)
+    plt.savefig('scatter.%s' % img_format, format=img_format) #plotting the points
     plt.close()
     return (sample_mean, sample_cov)
 
 # Question 3: Non-parametric estimation - histograms
 
 # question 1.5
+#precondition: data is generated from data(N), bins is a natural number
+#postcondition: Two histograms have been plotted, one for the
+#               marginal probability density of each coordinate
 def histogram_plot(data, bins):
     x1,x2 = zip(*data)
     
     plt.figure(1)
-    plt.hist(x1, bins=bins, label='$p(x_1)$')
+    plt.hist(x1, bins=bins, label='$p(x_1)$') #histogram for p(x1)
     plt.annotate('#bins = %d' % bins, xy=(0.01, 0.95), xycoords='axes fraction')
     plt.legend()
     plt.savefig('histogram1.%s' % img_format, format=img_format)
 
     plt.figure(2)
-    plt.hist(x2, bins=bins,label='$p(x_2)$')
+    plt.hist(x2, bins=bins,label='$p(x_2)$') #histogram for p(x2)
     plt.annotate('#bins = %d' % bins, xy=(0.01, 0.95), xycoords='axes fraction')
     plt.legend()
     plt.savefig('histogram2.%s' % img_format, format=img_format)
@@ -72,10 +84,13 @@ def histogram_plot(data, bins):
 
 
 # question 1.6
+#precondition: data is generated from data(N), bins is a natural number
+#postcondition: Two histograms have been plotted, one for the marginal
+#               probability density of each coordinate
 def histogram_and_analytical_plot(data, bins):
     x1,_ = zip(*data)
-    mean = 1
-    std_dev = 0.3**(0.5)
+    mean = 1              #mean for analytical solution
+    std_dev = 0.3**(0.5)  #stdev for analytical solution
     range = np.arange(-3.5*std_dev + mean, 3.5*std_dev + mean, 0.001)
     plt.hist(x1, bins=bins, normed=True, label='$p(x_1)$')
     plt.plot(range, norm.pdf(range,mean,std_dev), linewidth=2,
@@ -85,23 +100,26 @@ def histogram_and_analytical_plot(data, bins):
     plt.close()
 
 # question 1.7
+#precondition: data contains N (x,y) tuples, generated from the data(N) function
+#              with 
+#postcondition: 3 2d-histograms have been plotted for x,y in data
 def histogram_plot_2d(data):
     x, y = zip(*data)
     
     plt.figure(1)
-    plt.hist2d(x,y,bins=10)
+    plt.hist2d(x,y,bins=10) #10x10 plot for data
     plt.annotate('#bins = 10', xy=(0.01, 0.95), xycoords='axes fraction',
                  color='white')
     plt.savefig('histogram3d_10bins.%s' % img_format, format=img_format)
 
     plt.figure(2)
-    plt.hist2d(x,y,bins=15)
+    plt.hist2d(x,y,bins=15) #15x15 plot for data
     plt.annotate('#bins = 15', xy=(0.01, 0.95), xycoords='axes fraction',
                  color='white')
     plt.savefig('histogram3d_15bins.%s' % img_format, format=img_format)
 
     plt.figure(3)
-    plt.hist2d(x,y,bins=20)
+    plt.hist2d(x,y,bins=20) #20x20 plot for data
     plt.annotate('#bins = 20', xy=(0.01, 0.95), xycoords='axes fraction',
                  color='white')
     plt.savefig('histogram3d_20bins.%s' % img_format, format=img_format)
