@@ -58,21 +58,47 @@ if __name__ == "__main__":
 
     import objdetection as obj
     import os.path
-    if(raw_input("Compute question 1.9: Visualise kandle1 from training set") == "Y"):
+    if(raw_input("Compute question 1.9: Visualise kande1 probability density") == "Y"):
         plt.figure()
 
         if not os.path.exists("data"):
             os.makedirs("data")
 
-        if not (os.path.isfile("data/prob_Z") and os.path.isfile("data/prob_Z_trans")):
+        if not (os.path.isfile("data/Z_kande1.pnm.data") and os.path.isfile("data/Z_trans_kande1.pnm.data")):
             obj.probability_model("kande1.pnm") #This function is very slow
 	                                    #delete data folder to rerun it
-        obj.display_model(obj.get_Z("data/prob_Z_trans"),(480,640))
+        obj.display_model("kande1.pnm")
+        print "Saved results as kande1_density.png"
         plt.close()
+        print
 
-    if(raw_input("Compute question 1.10: Plot object postition and spread? (Y/n): ") == "Y"):
+    if(raw_input("Compute question 1.10: Plot object postition and spread of kande1? (Y/n): ") == "Y"):
         plt.figure()
 
-	obj.contour_plot(640,480)
+	obj.contour_plot("kande1.pnm")
+        print "Saved results as kande1_and_contours.png"
+        plt.close()
+        print
 
-	plt.clean()
+    if(raw_input("Compute question 1.11: Visualise kande2 probability density") == "Y"):
+        plt.figure()
+
+        if not os.path.exists("data"):
+            os.makedirs("data")
+            
+        if not (os.path.isfile("data/Z_kande2.pnm.data") and os.path.isfile("data/Z_trans_kande2.pnm.data")):
+            obj.probability_model("kande2.pnm") #This function is very slow
+	                                    #delete data folder to rerun it
+
+        obj.display_model("kande2.pnm")
+        print "Saved results as kande2_density.png"
+        plt.close()
+        print
+
+    if(raw_input("Compute question 1.11: Plot object postition and spread of kande2? (Y/n): ") == "Y"):
+        plt.figure()
+	obj.contour_plot("kande2.pnm")
+        print "Saved results as kande2_and_contours.png"
+        plt.close()
+        print
+
