@@ -26,7 +26,7 @@ def probability_model(image):
    covariance = np.cov(data)
    gauss = norm_pdf_multivariate(mean, covariance)
    Z = [gauss(np.matrix(x - mean)) for x in orig.getdata()]
-   file_Z = open('data/prob_Z', 'w')
+   file_Z = open('data/Z_'+image+'.data', 'w')
    for z in Z:
       file_Z.write("%s\n" % z)
    file_Z.close()
@@ -36,55 +36,61 @@ def probability_model(image):
    OldRange = (maxZ - minZ)
    
    transformed_Z = [(((x - minZ) * 255) / OldRange) for x in Z]
-   file_Z = open('data/prob_Z_trans', 'w')
+   file_Z = open('data/Z_trans_'+image+'.data', 'w')
    for z in transformed_Z:
       file_Z.write("%s\n" % z)
    file_Z.close()
    return (mean, covariance)
 
-def display_model(transformed_z, size):
-   im = Image.new('L', size)
-   im.putdata(transformed_z)
-   im.show()
+def display_model(image):
+   im = Image.new('L', Image.open(image).size)
+   datafile = 'data/Z_trans_'+image+'.data'
+   im.putdata(get_Z(datafile))
+   im.save(image[:-4]+'_density.%s' % img_format, format=img_format)
 
-def get_Z(file):
-   return [float(line.strip()) for line in open(file)]
+def get_Z(datafile):
+   return [float(line.strip()) for line in open(datafile)]
 
-def get_object_position(width):
-   Z = get_Z('data/prob_Z')
+def get_weighted_position(image):
+   width, _ = Image.open(image).size
+   datafile = 'data/Z_'+image+'.data'
+   Z = get_Z(datafile)
    q_hat = sum([np.array([i % width, i / width]) * z \
                 for i,z in enumerate(Z)]) / sum(Z)
    return q_hat
 
-def plot_weighted_position(width):
-   mean_x,mean_y = get_object_position(width)
+def plot_weighted_position(image):
+   mean_x,mean_y = get_weighted_position(image)
    _, axes = plt.subplots()
-   im = plt.imread("kande1.JPG")
+   im = plt.imread(image)
 
    axes.imshow(im)
    axes.autoscale(False)
    axes.scatter(mean_x,mean_y, s=50, c='green', marker='x', linewidth=2,
                label='$\hat{q}$')
    plt.legend(loc=0, scatterpoints = 1)
-   plt.savefig('kande1_weighted_pos.%s' % img_format, format=img_format)
+   plt.savefig(image[:-4]+'_weighted_pos.%s' % img_format, format=img_format)
    plt.close()
    
 
-def spatial_covariance(width):
-   Z = get_Z('data/prob_Z')
-   x,y = get_object_position(width)
+def spatial_covariance(image):
+   width, _ = Image.open(image).size
+   datafile = 'data/Z_'+image+'.data'
+   Z = get_Z(datafile)
+   x,y = get_weighted_position(image)
    C = sum([(np.array([[i % width, i / width]]) - np.array([[x,y]])) * \
             (np.array([[i%width, i/width]]) - np.array([[x,y]])).T * z \
             for i,z in enumerate(Z)]) / float(sum(Z))
    return C
 
-def contour_plot(height,width):
+def contour_plot(image):
+   width, height = Image.open(image).size
    _, axes = plt.subplots()
-   im = plt.imread("kande1.JPG")
+   im = plt.imread(image)
    axes.imshow(im)
    axes.autoscale(False)
-   mean_x, mean_y = get_object_position(width)
-   covariance = spatial_covariance(width)
+   mean_x, mean_y = get_weighted_position(image)
+   covariance = spatial_covariance(image)
    delta = 1
    x = np.arange(0, width, delta)
    y = np.arange(0, height, delta)
@@ -101,12 +107,11 @@ def contour_plot(height,width):
                label='$\hat{q}$')
    axes.contour(X, Y, Z)
    plt.legend(loc=0, scatterpoints = 1)
-   plt.savefig('kande1_and_contours.%s' % img_format, format=img_format)
+   plt.savefig(image[:-4]+'_and_contours.%s' % img_format, format=img_format)
    plt.close()
 
 if  __name__ == "__main__":
-   contour_plot(640,480)
-
+  contour_plot('kande2.pnm')
 
    
 
