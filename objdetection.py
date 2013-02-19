@@ -58,9 +58,12 @@ def get_object_position(width):
 
 def plot_weighted_position(width):
    mean_x,mean_y = get_object_position(width)
+   _, axes = plt.subplots()
    im = plt.imread("kande1.JPG")
-   plt.imshow(im)
-   plt.scatter(mean_x,mean_y, s=50, c='green', marker='x', linewidth=2,
+
+   axes.imshow(im)
+   axes.autoscale(False)
+   axes.scatter(mean_x,mean_y, s=50, c='green', marker='x', linewidth=2,
                label='$\hat{q}$')
    plt.legend(loc=0, scatterpoints = 1)
    plt.savefig('kande1_weighted_pos.%s' % img_format, format=img_format)
@@ -76,9 +79,10 @@ def spatial_covariance(width):
    return C
 
 def contour_plot(height,width):
+   _, axes = plt.subplots()
    im = plt.imread("kande1.JPG")
-   plt.imshow(im)
-   
+   axes.imshow(im)
+   axes.autoscale(False)
    mean_x, mean_y = get_object_position(width)
    covariance = spatial_covariance(width)
    delta = 1
@@ -93,12 +97,15 @@ def contour_plot(height,width):
       mux=mean_x,
       muy=mean_y,
       sigmaxy=covariance[0][1])
-   plt.scatter(mean_x,mean_y,s=50, c='green', marker='x')
-   plt.contour(X, Y, Z)
+   axes.scatter(mean_x,mean_y,s=50, c='green', marker='x',linewidth=2,
+               label='$\hat{q}$')
+   C = axes.contour(X, Y, Z, label='probability contours')
+   plt.legend(loc=0, scatterpoints = 1)
    plt.savefig('kande1_and_contours.%s' % img_format, format=img_format)
+   plt.close()
 
 if  __name__ == "__main__":
-   plot_weighted_position(480)
+   contour_plot(640,480)
 
 
    
