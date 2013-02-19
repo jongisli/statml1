@@ -53,6 +53,9 @@ def main():
     if(raw_input("Compute question 1.8: Monte Carlo? (y/n): ") == "y"):
         plt.figure()
         sam.convergence_plot(0.5)
+        plt.close()
+        
+        plt.figure()
 	sam.convergence_log_plot(0.5)
         print "Saved results as montecarlo.%s" % img_format
         print "Saved results as montecarlo_logplot.%s" % img_format
@@ -64,6 +67,8 @@ def main():
     
     if(raw_input("Compute probability model for kande1.pnm? (no will skip 9-11) (y/n): ") == "y"):
         mu,sigma = obj.probability_model("kande1.pnm")
+        print mu
+        print sigma
 	print
     else:
         return

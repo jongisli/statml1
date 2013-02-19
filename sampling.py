@@ -78,5 +78,4 @@ def convergence_log_plot(lambd):
     plt.close()
 
 if __name__ == "__main__":
-    convergence_plot(0.5)
     convergence_log_plot(0.5)
